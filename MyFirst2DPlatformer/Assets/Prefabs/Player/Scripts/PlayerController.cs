@@ -92,7 +92,7 @@ public class PlayerController : MonoBehaviour
     }
     private void Jump()
     {
-        if (Input.GetAxis("Vertical") > 0.1f && isGrounded)
+        if (Input.GetAxis("Vertical") > 0.5f && isGrounded)
         {
             rb.velocity = new Vector2(rb.velocity.x, jumpForce);
             animator.SetTrigger("JumpTrigger");
