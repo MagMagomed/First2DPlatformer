@@ -29,11 +29,6 @@ public class PlayerController : MonoBehaviour
         defaultColliderSize = capsuleCollider2D.size;
     }
 
-    private void FixedUpdate()
-    {
-        
-    }
-
     private void Update()
     {
         float moveInput = Input.GetAxisRaw("Horizontal");
@@ -45,7 +40,19 @@ public class PlayerController : MonoBehaviour
         AnimationUpdate();
         Jump();
     }
-
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        IsGroundedUpdate(collision);
+    }
+    private void OnCollisionStay2D(Collision2D collision)
+    {
+        IsGroundedUpdate(collision);
+    }
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        isGrounded = false;
+    }
+    #region Вспомогательные методы
     private void ColliderUpdate()
     {
         if(Input.GetAxis("Vertical") < 0)
@@ -75,19 +82,6 @@ public class PlayerController : MonoBehaviour
             groundNormal = ground.FirstOrDefault().normal;
             isGrounded = true;
         }
-    }
-
-    void OnCollisionEnter2D(Collision2D collision)
-    {
-        IsGroundedUpdate(collision);
-    }
-    private void OnCollisionStay2D(Collision2D collision)
-    {
-        IsGroundedUpdate(collision);
-    }
-    private void OnCollisionExit2D(Collision2D collision)
-    {
-        isGrounded = false;
     }
     private void AnimationUpdate()
     {
@@ -130,4 +124,5 @@ public class PlayerController : MonoBehaviour
     {
         transform.rotation = Quaternion.Euler(transform.rotation.x, 0f, transform.rotation.z);
     }
+    #endregion
 }
