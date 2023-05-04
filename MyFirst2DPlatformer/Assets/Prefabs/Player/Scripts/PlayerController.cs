@@ -66,19 +66,6 @@ public class PlayerController : MonoBehaviour
     }
     private void IsGroundedUpdate(Collision2D collision)
     {
-        //var grounds = collision.contacts.Where(c => (int)Mathf.Pow(2, c.collider.gameObject.layer)  == groundLayer.value);
-        //foreach (var ground in grounds)
-        //{
-        //    contactNormal = ground.normal;
-        //    float surfaceAngle = Mathf.Atan2(contactNormal.x, contactNormal.y) * Mathf.Rad2Deg;
-        //    if (Mathf.Abs(surfaceAngle) <= 45f)
-        //    {
-        //        groundNormal = ground.normal;
-        //        isGrounded = true;
-        //        break;
-        //    }
-        //}
-
         var ground = collision.contacts.Where(c => 
                                                     (int)Mathf.Pow(2, c.collider.gameObject.layer) == groundLayer.value &&
                                                     Mathf.Abs(Mathf.Atan2(c.normal.x, c.normal.y) * Mathf.Rad2Deg) <= 45f
