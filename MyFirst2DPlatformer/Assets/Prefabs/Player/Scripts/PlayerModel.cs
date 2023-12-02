@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 
-public class Player : MonoBehaviour
+public class PlayerModel : MonoBehaviour
 {
     [SerializeField] public float movementSpeed = 5f;
     [SerializeField] public float jumpForce = 10f;
@@ -17,7 +17,6 @@ public class Player : MonoBehaviour
     public Rigidbody2D rb;
     public CapsuleCollider2D capsuleCollider2D;
     public Vector2 defaultColliderSize;
-    public Animator animator;
 
     public bool isGrounded = false;
     public bool isSit = false;

@@ -5,14 +5,15 @@ using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class PlayerController : MonoBehaviour, IMoveble, IAnimatable
+public class PlayerController : MonoBehaviour, IMoveble
 {
-    public Player player;
+    public PlayerModel playerModel;
+    public PlayerView playerView;
     private Vector2 contactNormal = Vector3.zero;
     private Vector2 groundNormal = Vector3.zero;
     private void Update()
     {
-        AnimationUpdate();
+        playerView.AnimationUpdate(playerModel);
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
@@ -25,10 +26,10 @@ public class PlayerController : MonoBehaviour, IMoveble, IAnimatable
     }
     private void IsCanMoveUpdate(Collision2D collision)
     {
-        player.canMoveToTheSide = true;
+        playerModel.canMoveToTheSide = true;
 
         var grounds = collision.contacts.Where(c =>
-                                                    (int)Mathf.Pow(2, c.collider.gameObject.layer) == player.groundLayer.value &&
+                                                    (int)Mathf.Pow(2, c.collider.gameObject.layer) == playerModel.groundLayer.value &&
                                                     Mathf.Abs(Mathf.Atan2(c.normal.x, c.normal.y) * Mathf.Rad2Deg) > 45f
                                               );
 
@@ -39,80 +40,69 @@ public class PlayerController : MonoBehaviour, IMoveble, IAnimatable
         {
             if(wallIsLeft && Input.GetAxis("Horizontal") < 0)
             {
-                player.canMoveToTheSide = false;
+                playerModel.canMoveToTheSide = false;
             }
             else if(wallIsRight && Input.GetAxis("Horizontal") > 0)
             {
-                player.canMoveToTheSide = false;
+                playerModel.canMoveToTheSide = false;
             }
         }
     }
 
     private void OnCollisionExit2D(Collision2D collision)
     {
-        player.isGrounded = false;
-        player.canMoveToTheSide = true;
+        playerModel.isGrounded = false;
+        playerModel.canMoveToTheSide = true;
     }
     #region Вспомогательные методы
     private void ColliderUpdate()
     {
         if(Input.GetAxis("Vertical") < 0)
         {
-            Vector2 otherObjectSize = player.sprite.bounds.size;
-            player.capsuleCollider2D.size = otherObjectSize;
+            Vector2 otherObjectSize = playerModel.sprite.bounds.size;
+            playerModel.capsuleCollider2D.size = otherObjectSize;
         }
         else
         {
-            player.capsuleCollider2D.size = player.defaultColliderSize;
+            playerModel.capsuleCollider2D.size = playerModel.defaultColliderSize;
         }
-    }
-    private bool IsJump()
-    {
-        return Input.GetButton("Jump");
     }
     private void IsSitUpdate()
     {
         float verticalInput = Input.GetAxis("Vertical");
-        player.isSit = verticalInput < 0 && player.isGrounded && Input.GetAxisRaw("Horizontal") == 0f;
+        playerModel.isSit = verticalInput < 0 && playerModel.isGrounded && Input.GetAxisRaw("Horizontal") == 0f;
     }
     private void IsGroundedUpdate(Collision2D collision)
     {
         var grounds = collision.contacts.Where(c => 
-                                                    (int)Mathf.Pow(2, c.collider.gameObject.layer) == player.groundLayer.value &&
+                                                    (int)Mathf.Pow(2, c.collider.gameObject.layer) == playerModel.groundLayer.value &&
                                                     Mathf.Abs(Mathf.Atan2(c.normal.x, c.normal.y) * Mathf.Rad2Deg) <= 45f
                                               );
         if (grounds.Count() != 0)
         {
             groundNormal = grounds.FirstOrDefault().normal;
-            player.isGrounded = true;
+            playerModel.isGrounded = true;
         }
-    }
-    public void AnimationUpdate()
-    {
-        player.animator.SetBool("Idle", player.isGrounded);
-        player.animator.SetFloat("xVelocity", Mathf.Abs(Input.GetAxisRaw("Horizontal")));
-        player.animator.SetFloat("yVelocity", player.rb.velocity.y);
-        player.animator.SetBool("isSit", player.isSit);
     }
     public void Jump()
     {
-        if (player.isGrounded)
+        if (playerModel.isGrounded)
         {
-            player.rb.velocity = new Vector2(player.rb.velocity.x, player.jumpForce);
-            player.animator.SetTrigger("JumpTrigger");
+            playerModel.rb.velocity = new Vector2(playerModel.rb.velocity.x, playerModel.jumpForce);
+            playerView.JumpTrigger();
         }
     }
     private void Move(float moveInput) 
     {
-        if(Mathf.Abs(moveInput) > 0 && player.canMoveToTheSide)
+        if(Mathf.Abs(moveInput) > 0 && playerModel.canMoveToTheSide)
         {
-            if (player.isGrounded)
+            if (playerModel.isGrounded)
             {
-                player.rb.velocity = groundNormal.Perpendicular1() * player.movementSpeed * moveInput;
+                playerModel.rb.velocity = groundNormal.Perpendicular1() * playerModel.movementSpeed * moveInput;
             }
             else
             {
-                player.rb.velocity = new Vector2(moveInput * player.movementSpeed, player.rb.velocity.y);
+                playerModel.rb.velocity = new Vector2(moveInput * playerModel.movementSpeed, playerModel.rb.velocity.y);
             }
         }
     }
@@ -129,11 +119,11 @@ public class PlayerController : MonoBehaviour, IMoveble, IAnimatable
     }
     private void FlipLeft()
     {
-        transform.rotation = Quaternion.Euler(transform.rotation.x, 180f, transform.rotation.z);
+        playerModel.transform.rotation = Quaternion.Euler(playerModel.transform.rotation.x, 180f, playerModel.transform.rotation.z);
     }
     private void FlipRight()
     {
-        transform.rotation = Quaternion.Euler(transform.rotation.x, 0f, transform.rotation.z);
+        playerModel.transform.rotation = Quaternion.Euler(playerModel.transform.rotation.x, 0f, playerModel.transform.rotation.z);
     }
 
     public void MoveHorizontal(float axisValue)
