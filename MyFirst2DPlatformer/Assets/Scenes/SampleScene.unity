@@ -514,6 +514,7 @@ GameObject:
   - component: {fileID: 1729580978}
   - component: {fileID: 1729580980}
   - component: {fileID: 1729580981}
+  - component: {fileID: 1729580982}
   - component: {fileID: 1729580979}
   m_Layer: 0
   m_Name: Player
@@ -571,7 +572,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 22f2c5ea94ef77c46b50c0f721b63ec0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 1729580980}
+  playerModel: {fileID: 1729580980}
+  playerView: {fileID: 1729580982}
 --- !u!70 &1729580979
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -611,7 +613,6 @@ MonoBehaviour:
   rb: {fileID: 1729580977}
   capsuleCollider2D: {fileID: 1729580979}
   defaultColliderSize: {x: 0, y: 0}
-  animator: {fileID: 1319318780}
   isGrounded: 0
   isSit: 0
   canMoveToTheSide: 0
@@ -627,6 +628,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 821a8afd8db7e354791292e67c677a77, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1729580982
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1729580974}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 54b2c274f839302479f92d80ff558e30, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animator: {fileID: 1319318780}
 --- !u!1001 &1948103458
 PrefabInstance:
   m_ObjectHideFlags: 0
