@@ -55,9 +55,9 @@ public class PlayerController : MonoBehaviour, IMoveble
         playerModel.canMoveToTheSide = true;
     }
     #region Вспомогательные методы
-    private void ColliderUpdate()
+    private void ColliderUpdate(float vericalAxis)
     {
-        if(Input.GetAxis("Vertical") < 0)
+        if(vericalAxis < 0)
         {
             Vector2 otherObjectSize = playerModel.sprite.bounds.size;
             playerModel.capsuleCollider2D.size = otherObjectSize;
@@ -67,10 +67,9 @@ public class PlayerController : MonoBehaviour, IMoveble
             playerModel.capsuleCollider2D.size = playerModel.defaultColliderSize;
         }
     }
-    private void IsSitUpdate()
+    private void IsSitUpdate(float vericalAxis)
     {
-        float verticalInput = Input.GetAxis("Vertical");
-        playerModel.isSit = verticalInput < 0 && playerModel.isGrounded && Input.GetAxisRaw("Horizontal") == 0f;
+        playerModel.isSit = vericalAxis < 0 && playerModel.isGrounded && Input.GetAxisRaw("Horizontal") == 0f;
     }
     private void IsGroundedUpdate(Collision2D collision)
     {
@@ -134,8 +133,8 @@ public class PlayerController : MonoBehaviour, IMoveble
 
     public void MoveVertical(float axisValue)
     {
-        ColliderUpdate();
-        IsSitUpdate();
+        ColliderUpdate(axisValue);
+        IsSitUpdate(axisValue);
     }
     #endregion
 }
