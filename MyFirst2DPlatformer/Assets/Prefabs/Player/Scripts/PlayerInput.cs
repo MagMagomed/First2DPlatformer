@@ -15,6 +15,7 @@ public class PlayerInput : MonoBehaviour
     {
         moveble.MoveHorizontal(Input.GetAxis("Horizontal"));
         moveble.MoveVertical(Input.GetAxis("Vertical"));
+        moveble.Atack(Input.GetKeyDown(KeyCode.E));
         if(Input.GetButton("Jump"))
         {
             moveble.Jump();

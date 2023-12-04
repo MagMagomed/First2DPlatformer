@@ -19,4 +19,9 @@ public class PlayerView : MonoBehaviour
     {
         animator.SetTrigger("JumpTrigger");
     }
+
+    internal void Atack()
+    {
+        animator.SetTrigger("Atack");
+    }
 }

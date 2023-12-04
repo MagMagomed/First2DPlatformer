@@ -20,8 +20,8 @@ public class PlayerModel : MonoBehaviour
 
     public bool isGrounded = false;
     public bool isSit = false;
-    public bool canMoveToTheSide;
-    public bool isMoving;
+    public bool canMoveToTheSide = true;
+    public bool isMoving = false;
 
     private void Start()
     {

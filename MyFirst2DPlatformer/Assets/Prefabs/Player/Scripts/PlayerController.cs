@@ -138,8 +138,15 @@ public class PlayerController : MonoBehaviour, IMoveble
 
     public void MoveVertical(float axisValue)
     {
-        ColliderUpdate(axisValue);
         IsSitUpdate(axisValue);
+        ColliderUpdate(axisValue);
+    }
+    public void Atack(bool atack)
+    {
+        if(atack && !playerModel.isMoving)
+        {
+            playerView.Atack();
+        }
     }
     #endregion
 }
