@@ -69,7 +69,7 @@ public class PlayerController : MonoBehaviour, IMoveble
     }
     private void IsSitUpdate(float vericalAxis)
     {
-        playerModel.isSit = vericalAxis < 0 && playerModel.isGrounded && Input.GetAxisRaw("Horizontal") == 0f;
+        playerModel.isSit = vericalAxis < 0 && !playerModel.isMoving;
     }
     private void IsGroundedUpdate(Collision2D collision)
     {
@@ -103,6 +103,11 @@ public class PlayerController : MonoBehaviour, IMoveble
             {
                 playerModel.rb.velocity = new Vector2(moveInput * playerModel.movementSpeed, playerModel.rb.velocity.y);
             }
+            playerModel.isMoving = true;
+        }
+        else
+        {
+            playerModel.isMoving = false;
         }
     }
     private void Flip(float moveInput)
